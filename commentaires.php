@@ -102,6 +102,7 @@
       // OK créer une boucle qui selectionne et affiche tous les commentaires qui possède l'id envoyé par l'url
       while ($comm = $mescomms->fetch())
       {
+
         ?>
 
         <p class="un_commentaire">
@@ -110,11 +111,22 @@
         </p>
 
 
+
+
         <?php
-      } //ferme la boucle
+        } //ferme la boucle
+
+        // ICI on rajoute une condition pour que si $comm est vide elle renvoie une erreur
+        if (empty($comm)) {
+          ?>
+
+          <h2> Ce billet n'existe pas ou plus </h2>
+
+          <?php
+        }
       // OK fermer cette requete
       $mescomms->closeCursor();
-       ?>
+        ?>
       </div>
 
       <!-- Formulaire pour soumettre un commentaire  -->
