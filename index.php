@@ -4,43 +4,48 @@
     <meta charset="utf-8">
     <title>Mon mini mini mini Blog</title>
     <style media="screen">
-    h1, h2
-    {
-      text-align:center;
-    }
+      h1, h2
+      {
+        text-align:center;
+      }
 
-    h2
-    {
-      background-color:black;
-      color:white;
-      font-size:0.9em;
-      position: relative;
-      margin-bottom:0px;
-      height: 40px;
-    }
+      h2
+      {
+        background-color:black;
+        color:white;
+        font-size:0.9em;
+        position: relative;
+        margin-bottom:0px;
+        height: 40px;
+      }
 
-    h2 span {
-      position: absolute;
-      right: 0;
-      color: white!important;
-    }
+      h2 span {
+        position: absolute;
+        right: 0;
+        color: white!important;
+      }
 
-    .news p
-    {
-      background-color:#CCCCCC;
-      margin-top:0px;
-    }
-    .news
-    {
-      width:70%;
-      margin:auto;
-    }
+      .news p
+      {
+        background-color:#CCCCCC;
+        margin-top:0px;
+      }
+      .news
+      {
+        width:70%;
+        margin:auto;
+      }
 
-    a
-    {
-      text-decoration: none;
-      color: blue;
-    }
+      a
+      {
+        text-decoration: none;
+        color: blue;
+      }
+
+      main {
+        display: flex;
+        flex-flow: column-reverse;
+      }
     </style>
   </head>
   <body>
