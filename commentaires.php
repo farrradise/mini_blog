@@ -66,14 +66,31 @@
     }
 
     // OK identifier le ID pour savoir quel article afficher
-    $idRef = $_GET['ID'];
-    $monarticle = $bdd->prepare('SELECT ID, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y à %H:%i\') AS ladate FROM billets WHERE ID = :id') or die(print_r($bdd->errorInfo()));
-    $monarticle->execute(array('id' => $_GET['ID']));
-    while ($article = $monarticle->fetch())
-    {
-    ?>
 
-    <!-- OK afficher l'article de l'id identifié précédemment -->
+    //securise get
+    // verif get pas vide
+    if (empty($_GET['ID'])) {
+      header('Location: index.php');
+    }
+
+    $idRef = htmlspecialchars($_GET['ID']);
+    $monarticle = $bdd->prepare('SELECT ID, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y à %H:%i\') AS ladate FROM billets WHERE ID = :id') or die(print_r($bdd->errorInfo()));
+    $monarticle->execute(array('id' => $idRef));
+
+    $article = $monarticle->fetch();
+
+        //condition qui vérifie si article vaut faux ou vrai, si faux cela signifie que l'article n'est pas dans la base de données et qu'on essaie d'ajouter une information via URL
+        if (!$article) {
+        ?>
+
+        <h2> Ce billet n'existe pas ou plus </h2>
+
+        <?php
+        } // ferme la condition qui vérifie que l'article n'existe pas
+        else {
+        ?>
+
+        <!-- OK afficher l'article de l'id identifié précédemment -->
       <article class="news">
 
         <h2><?= $article['titre'] ?> <br>
@@ -83,12 +100,13 @@
         </p>
 
       </article>
-      <?php
-      }
+        <?php
+        }
+
 
       //OK fermer la requete d'affichage de l'article
-      $monarticle->closeCursor();
-       ?>
+        $monarticle->closeCursor();
+        ?>
 
       <div class="commentaires">
 
@@ -97,12 +115,11 @@
       // OK faire requete pour lier la BDD commentaire a cette page
       $mescomms = $bdd->prepare('SELECT ID_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, \'%d/%m/%Y à %H:%i\') AS ladate FROM commentaires WHERE ID_billet = :id') or die(print_r($bdd->errorInfo()));
       // OK identifier le ID pour savoir quels commentaires afficher
-      $mescomms->execute(array('id' => htmlspecialchars($_GET['ID'])));
+      $mescomms->execute(array('id' => $idRef));
 
       // OK créer une boucle qui selectionne et affiche tous les commentaires qui possède l'id envoyé par l'url
       while ($comm = $mescomms->fetch())
       {
-
         ?>
 
         <p class="un_commentaire">
@@ -111,22 +128,11 @@
         </p>
 
 
-
-
         <?php
-        } //ferme la boucle
-
-        // ICI on rajoute une condition pour que si $comm est vide elle renvoie une erreur
-        if (empty($comm)) {
-          ?>
-
-          <h2> Ce billet n'existe pas ou plus </h2>
-
-          <?php
-        }
+      } //ferme la boucle
       // OK fermer cette requete
       $mescomms->closeCursor();
-        ?>
+       ?>
       </div>
 
       <!-- Formulaire pour soumettre un commentaire  -->
@@ -134,7 +140,7 @@
 
         <h3>Rédiger un commentaire</h3>
         <input type="hidden" name="ID_billet" value="<?=$idRef?>"/>
-        <label for="auteur"><input type="text" name="auteur" value=""></label><br>
+        <label for="auteur"><input type="text" name="auteur" value=""></label> <br>
         <label for="commentaire"><textarea name="commentaire" rows="8" cols="80"></textarea></label><br>
         <input type="submit" name="" value="Soumettre">
       </form>
