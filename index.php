@@ -65,7 +65,7 @@ catch(Exception $e)
 }
 
 //OK faire une requete pour afficher tous les articles (5 derniers orderby desc + limit)
-$mesarticles = $bdd->query('SELECT ID, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y %Hh%imin%ss\') AS ladate FROM billets ORDER BY ID DESC LIMIT 0, 5') or die(print_r($bdd->errorInfo()));
+$mesarticles = $bdd->query('SELECT ID, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y à %H:%i\') AS ladate FROM billets ORDER BY ID DESC LIMIT 0, 5') or die(print_r($bdd->errorInfo()));
 
 //OK faire une boucle pour afficher la requete
 while ($article = $mesarticles->fetch())

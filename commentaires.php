@@ -67,7 +67,7 @@
 
     // OK identifier le ID pour savoir quel article afficher
     $idRef = $_GET['ID'];
-    $monarticle = $bdd->prepare('SELECT ID, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y %Hh%imin%ss\') AS ladate FROM billets WHERE ID = :id') or die(print_r($bdd->errorInfo()));
+    $monarticle = $bdd->prepare('SELECT ID, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y à %H:%i\') AS ladate FROM billets WHERE ID = :id') or die(print_r($bdd->errorInfo()));
     $monarticle->execute(array('id' => $_GET['ID']));
     while ($article = $monarticle->fetch())
     {
@@ -80,25 +80,41 @@
           <span>Le <?= $article['ladate'] ?> </span>
         </h2>
         <p><?= $article['contenu'] ?><br>
-          <!-- OK dans cette boucle y mettre le bouton commentaires pour rediriger vers page commentaires avec info de l'id de l'article dans url -->
         </p>
 
       </article>
       <?php
       }
+
       //OK fermer la requete d'affichage de l'article
       $monarticle->closeCursor();
-
        ?>
+
       <div class="commentaires">
 
-        <!--
+      <?php
 
-        // faire requete pour lier la BDD commentaire a cette page
-        // identifier le ID pour savoir quels commentaires afficher
-        // créer une boucle qui selectionne et affiche tous les commentaires qui possède l'id envoyé par l'url
-        // fermer cette requete
-      -->
+      // OK faire requete pour lier la BDD commentaire a cette page
+      $mescomms = $bdd->prepare('SELECT ID_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, \'%d/%m/%Y à %H:%i\') AS ladate FROM commentaires WHERE ID_billet = :id') or die(print_r($bdd->errorInfo()));
+      // OK identifier le ID pour savoir quels commentaires afficher
+      $mescomms->execute(array('id' => $_GET['ID']));
+
+      // OK créer une boucle qui selectionne et affiche tous les commentaires qui possède l'id envoyé par l'url
+      while ($comm = $mescomms->fetch())
+      {
+        ?>
+
+        <p class="un_commentaire">
+          <span><?=$comm['auteur']?> : </span> le <?=$comm['ladate']?> <br>
+          <?=$comm['commentaire']?>
+        </p>
+
+
+        <?php
+      } //ferme la boucle
+      // OK fermer cette requete
+      $mescomms->closeCursor();
+       ?>
 
       </div>
     </main>
