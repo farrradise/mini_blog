@@ -97,7 +97,7 @@
       // OK faire requete pour lier la BDD commentaire a cette page
       $mescomms = $bdd->prepare('SELECT ID_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, \'%d/%m/%Y à %H:%i\') AS ladate FROM commentaires WHERE ID_billet = :id') or die(print_r($bdd->errorInfo()));
       // OK identifier le ID pour savoir quels commentaires afficher
-      $mescomms->execute(array('id' => $_GET['ID']));
+      $mescomms->execute(array('id' => htmlspecialchars($_GET['ID'])));
 
       // OK créer une boucle qui selectionne et affiche tous les commentaires qui possède l'id envoyé par l'url
       while ($comm = $mescomms->fetch())
@@ -115,8 +115,18 @@
       // OK fermer cette requete
       $mescomms->closeCursor();
        ?>
-
       </div>
+
+      <!-- Formulaire pour soumettre un commentaire  -->
+      <form class="" action="comment_post.php" method="post">
+
+        <h3>Rédiger un commentaire</h3>
+        <input type="hidden" name="ID_billet" value="<?=$idRef?>"/>
+        <label for="auteur"><input type="text" name="auteur" value=""></label><br>
+        <label for="commentaire"><textarea name="commentaire" rows="8" cols="80"></textarea></label><br>
+        <input type="submit" name="" value="Soumettre">
+      </form>
+
     </main>
 
   </body>
