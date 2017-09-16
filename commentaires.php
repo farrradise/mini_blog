@@ -74,9 +74,14 @@
     }
 
     if (isset($_GET['page'])) {
-      $page = htmlspecialchars($_GET['page']);
+      $page = intval(htmlspecialchars($_GET['page']));
+
+      if($page == 0) {
+        header('Location: commentaires.php?ID='. $_GET['ID']);
+      }
+
     } else {
-      $page = "";
+      $page = 1;
     }
 
     $idRef = htmlspecialchars($_GET['ID']);
@@ -175,6 +180,11 @@
          $nbrComm = $nbrTotalComm->fetch();
          $nbrComm1 = floatval($nbrComm['nb_comm']);
          $nbrPage = ceil($nbrComm1 / 5);
+
+         if (isset($_GET['page']) AND $_GET['page'] > $nbrPage) { // DEMANDER AUX COACHS D'EXPLIQUER CE COMPORTEMENT. reussi à debugger mais aucune idée du pourquoi du comment (rapport au ISSET)...
+         header('Location: commentaires.php?ID='. $idRef);
+         }
+
          for ($i=1; $i <= $nbrPage; $i++) {
         ?>
         <a href="commentaires.php?ID=<?=$idRef?>&page=<?=$i?>"><?=$i?></a>
