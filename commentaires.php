@@ -3,56 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title>Un article en particulier</title>
-    <style media="screen">
-      h1, h2
-      {
-        text-align:center;
-      }
 
-      h2
-      {
-        background-color:black;
-        color:white;
-        font-size:0.9em;
-        position: relative;
-        margin-bottom:0px;
-        height: 40px;
-      }
-
-      h2 span {
-        position: absolute;
-        right: 0;
-        color: white!important;
-      }
-
-      .news p
-      {
-        background-color:#CCCCCC;
-        margin-top:0px;
-      }
-      .news
-      {
-        width:70%;
-        margin:auto;
-      }
-
-      a
-      {
-        text-decoration: none;
-        color: blue;
-      }
-
-      .commentaires {
-        /*display: flex;*/
-        /*flex-flow: colum;*/
-      }
-    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
 
   </head>
-  <body>
-    <h1>Mon BLOG de fifou</h1>
+  <body class=" bg-primary">
+    <h1 class="text-white">Mon BLOG de fifou</h1>
     <main>
-      <a href="index.php">Retour aux articles</a>
+      <a href="index.php"class="btn btn-primary bg-warning">Retour aux articles</a>
 
     <?php
     // OK faire requete pour lier la BDD a cette page
@@ -105,12 +64,12 @@
         ?>
 
         <!-- OK afficher l'article de l'id identifié précédemment -->
-      <article class="news">
+      <article class="card">
 
-        <h2><?= $article['titre'] ?> <br>
+        <h2 class="card-header"><?= $article['titre'] ?> <br>
           <span>Le <?= $article['ladate'] ?> </span>
         </h2>
-        <p><?= $article['contenu'] ?><br>
+        <p class="card-body"><?= $article['contenu'] ?><br>
         </p>
 
       </article>
@@ -158,9 +117,14 @@
       {
         ?>
 
-        <p class="un_commentaire">
-          <span><?=$comm['auteur']?> : </span> le <?=$comm['ladate']?> <br>
-          <?=$comm['commentaire']?>
+        <p class="un_commentaire bg-warning text-white">
+          <span style="font-style : italic;"> Le <?=$comm['ladate']?> </span> <br>
+          <span style="font-weight : bolder;">
+            <?=$comm['auteur']?> a écrit : <br>
+          </span>
+          <span style="font-size : 0.9em;">
+            <?=$comm['commentaire']?>
+          </span>
         </p>
 
 
@@ -170,43 +134,52 @@
       // OK fermer cette requete
       $mescomms->closeCursor();
        ?>
-       <p>Page :
-         <!-- mettre le html et la boucle pour choisir le a et la page voulu -->
-         <?php
-         //pour calculer le nombre de pages que je vais faire
-         $nbrTotalComm = $bdd->prepare('SELECT COUNT(*) AS nb_comm FROM commentaires WHERE ID_billet = :laref');
-         $nbrTotalComm->execute(array('laref'=> $idRef));
+       <nav aria-label="...">
 
-         $nbrComm = $nbrTotalComm->fetch();
-         $nbrComm1 = floatval($nbrComm['nb_comm']);
-         $nbrPage = ceil($nbrComm1 / 5);
+         <ul class="pagination">
+           <li class="page-item disabled">
+             <span class="page-link">PAGE </span>
+           </li>
+           <!-- mettre le html et la boucle pour choisir le a et la page voulu -->
+           <?php
+           //pour calculer le nombre de pages que je vais faire
+           $nbrTotalComm = $bdd->prepare('SELECT COUNT(*) AS nb_comm FROM commentaires WHERE ID_billet = :laref');
+           $nbrTotalComm->execute(array('laref'=> $idRef));
 
-         if (isset($_GET['page']) AND $_GET['page'] > $nbrPage) { // DEMANDER AUX COACHS D'EXPLIQUER CE COMPORTEMENT. reussi à debugger mais aucune idée du pourquoi du comment (rapport au ISSET)...
-         header('Location: commentaires.php?ID='. $idRef);
-         }
+           $nbrComm = $nbrTotalComm->fetch();
+           $nbrComm1 = floatval($nbrComm['nb_comm']);
+           $nbrPage = ceil($nbrComm1 / 5);
 
-         for ($i=1; $i <= $nbrPage; $i++) {
-        ?>
-        <a href="commentaires.php?ID=<?=$idRef?>&page=<?=$i?>"><?=$i?></a>
-        <?php
-        } //close for loop
-        $nbrTotalComm->closeCursor();
+           if (isset($_GET['page']) AND $_GET['page'] > $nbrPage) { // DEMANDER AUX COACHS D'EXPLIQUER CE COMPORTEMENT. reussi à debugger mais aucune idée du pourquoi du comment (rapport au ISSET)...
+           header('Location: commentaires.php?ID='. $idRef);
+           }
 
-        ?>
-       </p>
+           for ($i=1; $i <= $nbrPage; $i++) {
+          ?>
+          <li class="page-item"><a class="page-link" href="commentaires.php?ID=<?=$idRef?>&page=<?=$i?>"><?=$i?></a></li>
+          <?php
+          } //close for loop
+          $nbrTotalComm->closeCursor();
+
+          ?>
+          </ul>
+        </nav>
       </div>
 
       <!-- Formulaire pour soumettre un commentaire  -->
       <form class="" action="comment_post.php" method="post">
 
-        <h3>Rédiger un commentaire</h3>
+        <h3 class="text-warning">Rédiger un commentaire</h3>
         <input type="hidden" name="ID_billet" value="<?=$idRef?>"/>
         <label for="auteur"><input type="text" name="auteur" value=""></label> <br>
         <label for="commentaire"><textarea name="commentaire" rows="8" cols="80"></textarea></label><br>
-        <input type="submit" name="" value="Soumettre">
+        <input type="submit" name="" value="Soumettre" class="btn btn-primary bg-warning">
       </form>
 
     </main>
 
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   </body>
 </html>
