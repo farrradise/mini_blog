@@ -128,17 +128,24 @@
       // pour savoir quelle page des commentaires afficher
        $premier_comm = 0;
        $nombre_comm = 5;
+       $mescomms->bindParam(':id', $idRef, PDO::PARAM_INT);
+       $mescomms->bindParam(':nombre', $nombre_comm, PDO::PARAM_INT);
 
       if ($page == '1' OR empty($page)) {
 
-      $mescomms->bindParam(':id', $idRef, PDO::PARAM_INT);
+      $premier_comm = 0;
       $mescomms->bindParam(':debut', $premier_comm, PDO::PARAM_INT);
-      $mescomms->bindParam(':nombre', $nombre_comm, PDO::PARAM_INT);
       $mescomms->execute();
 
       }  else {
-        # code...
-        // mettre une boucle ? identifier le numero de la page et afficher les commentaires en conséquence
+        // OK faire une boucle for qui verifiera la condition si $j nest pas egal à $page on ajoute +5 à $premier_comm
+        for ($j=2 ; $j<= $page; $j++) {
+          $premier_comm+= 5;
+          if ($j == $page) {
+            $mescomms->bindParam(':debut', $premier_comm, PDO::PARAM_INT);
+            $mescomms->execute();
+          }
+        }
       }
 
       // OK créer une boucle qui selectionne et affiche tous les commentaires qui possède l'id envoyé par l'url
