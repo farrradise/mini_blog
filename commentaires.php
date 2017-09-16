@@ -3,13 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>Un article en particulier</title>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
 
   </head>
   <body class=" bg-primary">
-    <h1 class="text-white">Mon BLOG de fifou</h1>
+    <h1 class="text-white bg-warning">Mon BLOG de fifou</h1>
     <main>
       <a href="index.php" class="btn btn-warning">Retour aux articles</a>
 
