@@ -11,7 +11,7 @@
   <body class=" bg-primary">
     <h1 class="text-white">Mon BLOG de fifou</h1>
     <main>
-      <a href="index.php"class="btn btn-primary bg-warning">Retour aux articles</a>
+      <a href="index.php" class="btn btn-warning">Retour aux articles</a>
 
     <?php
     // OK faire requete pour lier la BDD a cette page
@@ -66,8 +66,8 @@
         <!-- OK afficher l'article de l'id identifié précédemment -->
       <article class="card">
 
-        <h2 class="card-header"><?= $article['titre'] ?> <br>
-          <span>Le <?= $article['ladate'] ?> </span>
+        <h2 class="card-header text-primary"><?= $article['titre'] ?> <br>
+          <span class="date text-warning">Le <?= $article['ladate'] ?> </span>
         </h2>
         <p class="card-body"><?= $article['contenu'] ?><br>
         </p>
@@ -169,10 +169,18 @@
       <!-- Formulaire pour soumettre un commentaire  -->
       <form class="" action="comment_post.php" method="post">
 
-        <h3 class="text-warning">Rédiger un commentaire</h3>
+        <h3 class="text-white">Rédiger un commentaire</h3>
         <input type="hidden" name="ID_billet" value="<?=$idRef?>"/>
-        <label for="auteur"><input type="text" name="auteur" value=""></label> <br>
-        <label for="commentaire"><textarea name="commentaire" rows="8" cols="80"></textarea></label><br>
+        <label for="auteur" class="text-white">Votre pseudo :
+          <br>
+          <input type="text" name="auteur" value="">
+        </label>
+        <br>
+        <label for="commentaire" class="text-white">Votre Message :
+          <br>
+          <textarea name="commentaire"></textarea>
+        </label>
+        <br>
         <input type="submit" name="" value="Soumettre" class="btn btn-primary bg-warning">
       </form>
 

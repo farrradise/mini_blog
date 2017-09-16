@@ -35,11 +35,11 @@
       <article class="card">
 
         <h2 class="card-header text-primary"><?= $article['titre'] ?> <br>
-          <span>Le <?= $article['ladate'] ?> </span>
+          <span class="date text-warning">Le <?= $article['ladate'] ?> </span>
         </h2>
         <p class="card-body"><?= $article['contenu'] ?><br>
           <!-- OK dans cette boucle y mettre le bouton commentaires pour rediriger vers page commentaires avec info de l'id de l'article dans url -->
-          <a href="commentaires.php?ID=<?=$article['ID']?>" class="btn btn-primary">Lire les commentaires ! </a>
+          <a href="commentaires.php?ID=<?=$article['ID']?>" class="btn btn-warning">Lire les commentaires ! </a>
         </p>
 
       </article>

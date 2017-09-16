@@ -10,4 +10,42 @@ p, h1 {
 
 h1 {
   text-align: center;
+  font-size: 3em;
+  padding: 30px;
+  border-bottom: 3px solid white;
+}
+
+.card {
+  margin: 2em auto;
+}
+
+
+.date {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  font-size: 0.5em;
+}
+
+.card-header {
+  position: relative;
+}
+
+
+.btn-warning {
+  margin-top: 30px;
+}
+
+h3 {
+  margin: 20px 0;
+}
+
+label {
+  width: 100%;
+}
+
+textarea {
+  border-radius: 8px;
+  width: 100%;
+  min-height: 150px;
 }
