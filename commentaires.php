@@ -43,8 +43,8 @@
       }
 
       .commentaires {
-        display: flex;
-        flex-flow: column-reverse;
+        /*display: flex;*/
+        /*flex-flow: colum;*/
       }
     </style>
 
@@ -73,7 +73,16 @@
       header('Location: index.php');
     }
 
+    if (isset($_GET['page'])) {
+      $page = htmlspecialchars($_GET['page']);
+    } else {
+      $page = "";
+    }
+
     $idRef = htmlspecialchars($_GET['ID']);
+
+
+
     $monarticle = $bdd->prepare('SELECT ID, titre, contenu, DATE_FORMAT(date_creation, \'%d/%m/%Y à %H:%i\') AS ladate FROM billets WHERE ID = :id') or die(print_r($bdd->errorInfo()));
     $monarticle->execute(array('id' => $idRef));
 
@@ -113,9 +122,24 @@
       <?php
 
       // OK faire requete pour lier la BDD commentaire a cette page
-      $mescomms = $bdd->prepare('SELECT ID_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, \'%d/%m/%Y à %H:%i\') AS ladate FROM commentaires WHERE ID_billet = :id') or die(print_r($bdd->errorInfo()));
+      $mescomms = $bdd->prepare('SELECT ID_billet, auteur, commentaire, DATE_FORMAT(date_commentaire, \'%d/%m/%Y à %H:%i\') AS ladate FROM commentaires WHERE ID_billet = :id ORDER BY ladate DESC LIMIT :debut, :nombre') or die(print_r($bdd->errorInfo()));
       // OK identifier le ID pour savoir quels commentaires afficher
-      $mescomms->execute(array('id' => $idRef));
+
+      // pour savoir quelle page des commentaires afficher
+       $premier_comm = 0;
+       $nombre_comm = 5;
+
+      if ($page == '1' OR empty($page)) {
+
+      $mescomms->bindParam(':id', $idRef, PDO::PARAM_INT);
+      $mescomms->bindParam(':debut', $premier_comm, PDO::PARAM_INT);
+      $mescomms->bindParam(':nombre', $nombre_comm, PDO::PARAM_INT);
+      $mescomms->execute();
+
+      }  else {
+        # code...
+        // mettre une boucle ? identifier le numero de la page et afficher les commentaires en conséquence
+      }
 
       // OK créer une boucle qui selectionne et affiche tous les commentaires qui possède l'id envoyé par l'url
       while ($comm = $mescomms->fetch())
@@ -130,9 +154,29 @@
 
         <?php
       } //ferme la boucle
+
       // OK fermer cette requete
       $mescomms->closeCursor();
        ?>
+       <p>Page :
+         <!-- mettre le html et la boucle pour choisir le a et la page voulu -->
+         <?php
+         //pour calculer le nombre de pages que je vais faire
+         $nbrTotalComm = $bdd->prepare('SELECT COUNT(*) AS nb_comm FROM commentaires WHERE ID_billet = :laref');
+         $nbrTotalComm->execute(array('laref'=> $idRef));
+
+         $nbrComm = $nbrTotalComm->fetch();
+         $nbrComm1 = floatval($nbrComm['nb_comm']);
+         $nbrPage = ceil($nbrComm1 / 5);
+         for ($i=1; $i <= $nbrPage; $i++) {
+        ?>
+        <a href="commentaires.php?ID=<?=$idRef?>&page=<?=$i?>"><?=$i?></a>
+        <?php
+        } //close for loop
+        $nbrTotalComm->closeCursor();
+
+        ?>
+       </p>
       </div>
 
       <!-- Formulaire pour soumettre un commentaire  -->
