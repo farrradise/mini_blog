@@ -10,7 +10,7 @@
   </head>
   <body class="bg-primary">
     <aside class="bg-warning">
-      <button class="login" type="button" name="button" data-toggle="modal" data-target="#exampleModal">
+      <button class="login" type="button" name="button" data-toggle="modal" data-target="#Modal">
         <i class="fa fa-sign-in text-white" aria-hidden="true"></i>
       </button>
 
@@ -63,20 +63,20 @@
     </main>
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="Modal" tabindex="-1" role="dialog" aria-labelledby="seconnecter" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header bg-primary text-white">
-            <h5 class="modal-title" id="exampleModalLabel">Se connecter</h5>
+            <h5 class="modal-title" id="seconnecter">Se connecter</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div class="modal-body">
-            <form class="" action="index.html" method="post">
+            <form class="" action="login.php" method="post">
               <label for="admin"> Administrateur  <input type="text" name="admin" value=""></label>
               <label for="mot_de_passe">Password <input type="password" name="mot_de_passe" value=""></label>
-              <button type="button" class="btn btn-primary">Valider</button>
+              <input type="submit" class="btn btn-primary"></button>
             </form>
           </div>
         </div>
